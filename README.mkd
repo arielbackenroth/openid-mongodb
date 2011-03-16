@@ -1,0 +1,39 @@
+openid-mongodb
+============
+
+openid-mongodb is a MongoDB back-end storage for use with the python-openid
+package made by JanRain. It implements the OpenIDStore interface and
+can be plugged directly in.
+
+To ensure proper operation, this back-end utilizes the entire
+python-openid Store test suite and has 100% unit test coverage.
+
+Requirements
+------------
+    
+    python-openid: http://pypi.python.org/pypi/python-openid/
+    Python mongodb library: http://pypi.python.org/pypi/pymongo/
+
+Installation
+------------
+
+Install python-openid and the pymongo library, then install openid-mongodb.
+    
+    easy_install openid-mongodb
+
+Usage
+-----
+
+When using python-openid, use the MongoDB store:
+    
+    from openidmongodb import MongoDBStore
+    from openid.server import server
+    
+    openid_store = MongoDBStore()
+    openid_server = server.Server(openid_store, 'base_url_here')
+
+MongoDBStore takes several parameters, host, port, db, and a collection names for associations and nonces.
+    
+    openid_store(MongoDBtore(host='localhost', port=27017, db="openid", 
+                             associations_collection="associations",
+                             nonces_collection="nonces"))
