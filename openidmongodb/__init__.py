@@ -16,10 +16,14 @@ __all__ = ["MongoDBStore"]
 class MongoDBStore(OpenIDStore):
 
     def __init__(self, host="localhost", port=27017, db="openid",
-                 associations_collection="associations", nonces_collection="nonces"):
+                 associations_collection="associations", nonces_collection="nonces",
+                 username=None, password=None):
         self._conn = Connection(host, int(port))
-        self.associations = self._conn[db][associations_collection]
-        self.nonces = self._conn[db][nonces_collection]
+        self._db = self._conn[db]
+        if username and password:
+            self._db.authenticate(username, password)
+        self.associations = self._db[associations_collection]
+        self.nonces = self._db[nonces_collection]
         self.log_debug = logging.DEBUG >= log.getEffectiveLevel()
         super(MongoDBStore, self).__init__()
 
